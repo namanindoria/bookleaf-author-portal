@@ -4,10 +4,12 @@ services:
     env: node
     plan: free
     buildCommand: "npm run install:all && npm run build && mkdir -p server/public && cp -r client/dist/* server/public/"
-    startCommand: "cd server && npm start"
+    startCommand: "cd server && node --experimental-sqlite src/index.js"
     envVars:
       - key: NODE_VERSION
         value: 22.12.0
+      - key: NODE_OPTIONS
+        value: "--experimental-sqlite"
       - key: NODE_ENV
         value: production
       - key: PORT

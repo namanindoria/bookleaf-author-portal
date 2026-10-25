@@ -7,10 +7,10 @@
     "node": ">=22.5.0"
   },
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "node --watch src/index.js",
-    "seed": "node src/scripts/seed.js",
-    "test": "node src/scripts/test-api.js"
+    "start": "node --experimental-sqlite src/index.js",
+    "dev": "node --experimental-sqlite --watch src/index.js",
+    "seed": "node --experimental-sqlite src/scripts/seed.js",
+    "test": "node --experimental-sqlite src/scripts/test-api.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
