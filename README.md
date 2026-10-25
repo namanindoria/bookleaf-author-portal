@@ -8,6 +8,13 @@ The system features two interconnected real-time interfaces:
 
 ---
 
+## 🌐 Live Production Deployment
+- **Live Demo Application**: [https://bookleaf-author-portal-7jcj.onrender.com](https://bookleaf-author-portal-7jcj.onrender.com)
+- **Interactive Swagger OpenAPI Documentation**: [https://bookleaf-author-portal-7jcj.onrender.com/api/docs](https://bookleaf-author-portal-7jcj.onrender.com/api/docs)
+- **GitHub Repository**: [https://github.com/namanindoria/bookleaf-author-portal](https://github.com/namanindoria/bookleaf-author-portal)
+
+---
+
 ## ⚡ Quick Start & Setup Instructions
 
 ### Prerequisites
