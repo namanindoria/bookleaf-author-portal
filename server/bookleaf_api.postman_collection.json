@@ -1,0 +1,195 @@
+{
+  "info": {
+    "name": "BookLeaf Author Support Portal API",
+    "description": "Complete Postman collection for testing the BookLeaf Author Support & Communication Portal API endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "authorToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "1. Login as Author (Priya)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"priya.sharma@email.com\",\n  \"password\": \"author123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "2. Login as Admin",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@bookleaf.in\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "3. Get Demo Accounts",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/auth/demo-users", "host": ["{{baseUrl}}"], "path": ["api", "auth", "demo-users"] }
+          }
+        },
+        {
+          "name": "4. Reset / Seed Database",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/api/auth/seed", "host": ["{{baseUrl}}"], "path": ["api", "auth", "seed"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Author Portal",
+      "item": [
+        {
+          "name": "Get Author Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authorToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/authors/AUTH001", "host": ["{{baseUrl}}"], "path": ["api", "authors", "AUTH001"] }
+          }
+        },
+        {
+          "name": "Get Author Books",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authorToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/authors/AUTH001/books", "host": ["{{baseUrl}}"], "path": ["api", "authors", "AUTH001", "books"] }
+          }
+        },
+        {
+          "name": "Get Author Metrics",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authorToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/authors/AUTH001/metrics", "host": ["{{baseUrl}}"], "path": ["api", "authors", "AUTH001", "metrics"] }
+          }
+        },
+        {
+          "name": "List My Tickets",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authorToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/tickets", "host": ["{{baseUrl}}"], "path": ["api", "tickets"] }
+          }
+        },
+        {
+          "name": "Submit Ticket (Triggers AI)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authorToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"book_id\": \"BK001\",\n  \"subject\": \"I haven't received any royalty for 4 months\",\n  \"description\": \"I have sold copies on Amazon but no payout has reached my bank account. Please check.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/tickets", "host": ["{{baseUrl}}"], "path": ["api", "tickets"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Portal",
+      "item": [
+        {
+          "name": "Admin: List All Tickets (Urgent First)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/tickets?sortBy=urgent_first", "host": ["{{baseUrl}}"], "path": ["api", "tickets"], "query": [{ "key": "sortBy", "value": "urgent_first" }] }
+          }
+        },
+        {
+          "name": "Admin: Get Ticket Detail (with Internal Notes)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/tickets/TCK-100000", "host": ["{{baseUrl}}"], "path": ["api", "tickets", "TCK-100000"] }
+          }
+        },
+        {
+          "name": "Admin: Generate AI Response Draft",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/tickets/TCK-100000/ai-draft", "host": ["{{baseUrl}}"], "path": ["api", "tickets", "TCK-100000", "ai-draft"] }
+          }
+        },
+        {
+          "name": "Admin: Update Status or Override AI",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"In Progress\",\n  \"priority\": \"Critical\",\n  \"category\": \"Royalty & Payments\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/tickets/TCK-100000", "host": ["{{baseUrl}}"], "path": ["api", "tickets", "TCK-100000"] }
+          }
+        },
+        {
+          "name": "Admin: Add Internal Note",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"note\": \"Re-checked bank IFSC. Finance approved transaction batch for tomorrow.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/tickets/TCK-100000/notes", "host": ["{{baseUrl}}"], "path": ["api", "tickets", "TCK-100000", "notes"] }
+          }
+        },
+        {
+          "name": "Admin: Send Response to Author",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Dear Author, we have investigated this and expedited the payment to your bank account within 24 hours.\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/tickets/TCK-100000/messages", "host": ["{{baseUrl}}"], "path": ["api", "tickets", "TCK-100000", "messages"] }
+          }
+        }
+      ]
+    }
+  ]
+}
