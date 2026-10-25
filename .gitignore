@@ -6,3 +6,6 @@ client/dist
 Thumbs.db
 server/uploads/*
 !server/uploads/.gitkeep
+*.db-wal
+*.db-shm
+*.db-journal
