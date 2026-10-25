@@ -7,37 +7,37 @@ const DEMO_PRESETS = [
     role: 'admin',
     name: 'Admin Operations Desk',
     email: 'admin@bookleaf.in',
-    desc: 'Full ops access, AI workbench & ticket queue'
+    desc: 'Support queue, AI response studio, internal notes'
   },
   {
     role: 'admin',
-    name: 'Neha Sharma (Sr. Support Lead)',
+    name: 'Neha Sharma (Support Lead)',
     email: 'neha.support@bookleaf.in',
-    desc: 'Ops agent handle escalations'
+    desc: 'Escalations and priority approvals'
   },
   {
     role: 'author',
     name: 'Priya Sharma',
     email: 'priya.sharma@email.com',
-    desc: '2 books (Whispers of the Ganges) • Pending Royalty'
+    desc: '2 books • ₹3,570 pending royalty'
   },
   {
     role: 'author',
     name: 'Rohit Kapoor',
     email: 'rohit.kapoor@email.com',
-    desc: '2 books (Code & Karma) • High Sales'
+    desc: '2 books • High sales volume (1,203 sold)'
   },
   {
     role: 'author',
     name: 'Sneha Kulkarni',
     email: 'sneha.kulkarni@email.com',
-    desc: '3 books • Includes book in Production'
+    desc: '3 books • Includes "Midnight in Mysore" (In Production)'
   },
   {
     role: 'author',
     name: 'Kavita Deshmukh',
     email: 'kavita.deshmukh@email.com',
-    desc: '2 books • In Production (Typesetting)'
+    desc: '2 books • Includes "Raising Roots" (In Typesetting)'
   }
 ];
 
@@ -64,17 +64,11 @@ export function DemoUserSwitcher() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="btn btn-secondary btn-sm"
-        style={{
-          border: '1px solid rgba(16, 185, 129, 0.4)',
-          background: 'rgba(16, 185, 129, 0.08)',
-          color: 'var(--primary-400)',
-          fontWeight: 600
-        }}
-        title="Quick 1-Click Role & Author Switcher for Evaluation"
+        style={{ fontSize: '0.785rem', fontWeight: 500 }}
       >
-        <Users size={14} />
+        <Users size={13} color="#0f766e" />
         <span>Switch Account</span>
-        <ChevronDown size={13} style={{ transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+        <ChevronDown size={12} style={{ transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }} />
       </button>
 
       {isOpen && (
@@ -82,27 +76,26 @@ export function DemoUserSwitcher() {
           style={{
             position: 'absolute',
             right: 0,
-            top: 'calc(100% + 8px)',
+            top: 'calc(100% + 6px)',
             width: '320px',
-            background: 'var(--bg-card)',
-            border: '1px solid var(--border-subtle)',
-            borderRadius: 'var(--radius-md)',
-            boxShadow: 'var(--shadow-lg)',
+            background: '#ffffff',
+            border: '1px solid #e2e8f0',
+            borderRadius: '8px',
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05)',
             zIndex: 1000,
-            overflow: 'hidden',
-            padding: '0.5rem'
+            overflow: 'hidden'
           }}
         >
-          <div style={{ padding: '0.5rem 0.75rem', borderBottom: '1px solid var(--border-subtle)', marginBottom: '0.35rem' }}>
-            <p style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-dim)', letterSpacing: '0.05em' }}>
-              Quick Evaluation Switcher
+          <div style={{ padding: '0.75rem 1rem', borderBottom: '1px solid #f1f5f9', background: '#f8fafc' }}>
+            <p style={{ fontSize: '0.75rem', fontWeight: 600, color: '#334155' }}>
+              Quick Account Switcher
             </p>
-            <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-              Test both roles and edge cases instantly without entering passwords.
+            <p style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '2px' }}>
+              Test both roles and edge cases instantly
             </p>
           </div>
 
-          <div style={{ maxHeight: '340px', overflowY: 'auto' }}>
+          <div style={{ maxHeight: '320px', overflowY: 'auto', padding: '0.35rem' }}>
             {DEMO_PRESETS.map((item) => {
               const isCurrent = user?.email?.toLowerCase() === item.email.toLowerCase();
               return (
@@ -114,41 +107,39 @@ export function DemoUserSwitcher() {
                     width: '100%',
                     textAlign: 'left',
                     padding: '0.6rem 0.75rem',
-                    borderRadius: 'var(--radius-sm)',
+                    borderRadius: '6px',
                     border: 'none',
-                    background: isCurrent ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
-                    color: isCurrent ? 'var(--primary-300)' : 'var(--text-main)',
+                    background: isCurrent ? '#f0fdfa' : 'transparent',
                     cursor: 'pointer',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '0.15rem',
-                    transition: 'background 0.15s'
+                    gap: '2px',
+                    transition: 'background 0.1s'
                   }}
                   onMouseEnter={(e) => {
-                    if (!isCurrent) e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                    if (!isCurrent) e.currentTarget.style.background = '#f8fafc';
                   }}
                   onMouseLeave={(e) => {
                     if (!isCurrent) e.currentTarget.style.background = 'transparent';
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <span style={{ fontWeight: 600, fontSize: '0.825rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                      {item.role === 'admin' ? <Shield size={13} color="#f59e0b" /> : <BookOpen size={13} color="#10b981" />}
+                    <span style={{ fontWeight: 600, fontSize: '0.825rem', color: isCurrent ? '#0f766e' : '#0f172a', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                      {item.role === 'admin' ? <Shield size={13} color="#d97706" /> : <BookOpen size={13} color="#0f766e" />}
                       {item.name}
                     </span>
                     <span style={{
                       fontSize: '0.65rem',
-                      fontWeight: 700,
-                      textTransform: 'uppercase',
+                      fontWeight: 600,
                       padding: '0.1rem 0.4rem',
                       borderRadius: '4px',
-                      background: item.role === 'admin' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(16, 185, 129, 0.2)',
-                      color: item.role === 'admin' ? '#f59e0b' : '#34d399'
+                      background: item.role === 'admin' ? '#fef3c7' : '#e0f2fe',
+                      color: item.role === 'admin' ? '#92400e' : '#0369a1'
                     }}>
                       {item.role}
                     </span>
                   </div>
-                  <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
+                  <span style={{ fontSize: '0.72rem', color: '#64748b' }}>
                     {item.desc}
                   </span>
                 </button>

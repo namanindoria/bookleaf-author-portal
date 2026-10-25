@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { api } from '../../services/api';
 import { BookStatusBadge } from '../Common/Badge';
-import { BookOpen, DollarSign, CheckCircle2, Clock, AlertCircle, ShoppingCart, ExternalLink } from 'lucide-react';
+import { BookOpen, DollarSign, CheckCircle, Clock, ShoppingBag, Info } from 'lucide-react';
 
 export function MyBooks({ authorId, onSelectBookForQuery }) {
   const [books, setBooks] = useState([]);
@@ -29,7 +29,7 @@ export function MyBooks({ authorId, onSelectBookForQuery }) {
 
   if (loading) {
     return (
-      <div style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--text-dim)' }}>
+      <div style={{ textAlign: 'center', padding: '3rem 0', color: '#64748b' }}>
         Loading catalog and royalty figures...
       </div>
     );
@@ -41,229 +41,175 @@ export function MyBooks({ authorId, onSelectBookForQuery }) {
       {metrics && (
         <div className="kpi-grid">
           <div className="kpi-card">
-            <div className="kpi-info">
-              <h4>Total Books</h4>
+            <div>
+              <h4>Total Titles</h4>
               <div className="kpi-value">{metrics.totalBooks}</div>
-              <p style={{ fontSize: '0.725rem', color: 'var(--text-dim)', marginTop: '0.2rem' }}>
-                {metrics.publishedBooks} Live • {metrics.inProductionBooks} in Production
-              </p>
+              <div className="kpi-sub">
+                {metrics.publishedBooks} live • {metrics.inProductionBooks} in production
+              </div>
             </div>
-            <div className="kpi-icon" style={{ background: 'rgba(16, 185, 129, 0.12)', color: 'var(--primary-400)' }}>
-              <BookOpen size={22} />
+            <div className="kpi-icon-wrap">
+              <BookOpen size={18} />
             </div>
           </div>
 
           <div className="kpi-card">
-            <div className="kpi-info">
-              <h4>Total Copies Sold</h4>
+            <div>
+              <h4>Copies Sold</h4>
               <div className="kpi-value">{metrics.totalCopiesSold.toLocaleString()}</div>
-              <p style={{ fontSize: '0.725rem', color: 'var(--text-dim)', marginTop: '0.2rem' }}>
-                Across all retail channels
-              </p>
+              <div className="kpi-sub">Across all distribution channels</div>
             </div>
-            <div className="kpi-icon" style={{ background: 'rgba(2, 132, 199, 0.12)', color: '#38bdf8' }}>
-              <ShoppingCart size={22} />
+            <div className="kpi-icon-wrap" style={{ background: '#f0fdf4', color: '#16a34a' }}>
+              <ShoppingBag size={18} />
             </div>
           </div>
 
           <div className="kpi-card">
-            <div className="kpi-info">
-              <h4>Total Royalty Earned</h4>
-              <div className="kpi-value" style={{ color: 'var(--primary-300)' }}>
-                ₹{metrics.totalRoyaltyEarned.toLocaleString()}
-              </div>
-              <p style={{ fontSize: '0.725rem', color: 'var(--text-dim)', marginTop: '0.2rem' }}>
-                80% Net profit share
-              </p>
+            <div>
+              <h4>Total Royalties</h4>
+              <div className="kpi-value">₹{metrics.totalRoyaltyEarned.toLocaleString()}</div>
+              <div className="kpi-sub">80% net profit share</div>
             </div>
-            <div className="kpi-icon" style={{ background: 'rgba(16, 185, 129, 0.12)', color: 'var(--primary-400)' }}>
-              <DollarSign size={22} />
+            <div className="kpi-icon-wrap" style={{ background: '#ecfdf5', color: '#059669' }}>
+              <DollarSign size={18} />
             </div>
           </div>
 
           <div className="kpi-card">
-            <div className="kpi-info">
-              <h4>Royalty Paid</h4>
-              <div className="kpi-value" style={{ color: '#34d399' }}>
-                ₹{metrics.totalRoyaltyPaid.toLocaleString()}
-              </div>
-              <p style={{ fontSize: '0.725rem', color: 'var(--text-dim)', marginTop: '0.2rem' }}>
-                Disbursed to bank
-              </p>
-            </div>
-            <div className="kpi-icon" style={{ background: 'rgba(52, 211, 153, 0.12)', color: '#34d399' }}>
-              <CheckCircle2 size={22} />
-            </div>
-          </div>
-
-          <div className="kpi-card">
-            <div className="kpi-info">
-              <h4>Royalty Pending</h4>
-              <div className="kpi-value" style={{ color: metrics.totalRoyaltyPending > 0 ? '#fbbf24' : 'var(--text-muted)' }}>
+            <div>
+              <h4>Pending Payout</h4>
+              <div className="kpi-value" style={{ color: metrics.totalRoyaltyPending > 0 ? '#b45309' : '#0f172a' }}>
                 ₹{metrics.totalRoyaltyPending.toLocaleString()}
               </div>
-              <p style={{ fontSize: '0.725rem', color: 'var(--text-dim)', marginTop: '0.2rem' }}>
-                {metrics.totalRoyaltyPending >= 1000 ? 'Eligible for next payout' : 'Under ₹1,000 threshold'}
-              </p>
+              <div className="kpi-sub">
+                {metrics.totalRoyaltyPending >= 1000 ? 'Eligible for next quarterly cycle' : 'Below ₹1,000 threshold (rolls over)'}
+              </div>
             </div>
-            <div className="kpi-icon" style={{ background: 'rgba(245, 158, 11, 0.12)', color: '#fbbf24' }}>
-              <Clock size={22} />
+            <div className="kpi-icon-wrap" style={{ background: '#fffbeb', color: '#d97706' }}>
+              <Clock size={18} />
             </div>
           </div>
         </div>
       )}
 
-      {/* Policy Reminder Banner */}
+      {/* Policy Note */}
       <div style={{
-        background: 'rgba(16, 185, 129, 0.06)',
-        border: '1px solid rgba(16, 185, 129, 0.2)',
-        borderRadius: 'var(--radius-md)',
-        padding: '0.85rem 1.25rem',
-        marginBottom: '1.75rem',
+        background: '#f8fafc',
+        border: '1px solid #e2e8f0',
+        borderRadius: '8px',
+        padding: '0.75rem 1rem',
+        marginBottom: '1.5rem',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '0.75rem'
+        gap: '0.65rem',
+        fontSize: '0.8rem',
+        color: '#475569'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <AlertCircle size={18} color="#34d399" />
-          <p style={{ fontSize: '0.825rem', color: 'var(--text-muted)' }}>
-            <strong style={{ color: 'var(--text-main)' }}>BookLeaf Royalty Payout Policy:</strong> Royalties are calculated quarterly and disbursed within 45 days of the quarter closing. Minimum payout threshold is ₹1,000 (accumulated balances below ₹1,000 roll over).
-          </p>
-        </div>
+        <Info size={16} color="#0f766e" />
+        <span>
+          <strong>Payout Policy:</strong> Royalties are calculated quarterly and disbursed to your linked bank account within 45 days of the quarter ending. Minimum payout is ₹1,000.
+        </span>
       </div>
 
       {/* Books Table */}
-      <div className="glass-panel" style={{ overflow: 'hidden' }}>
-        <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border-subtle)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="clean-card" style={{ overflow: 'hidden' }}>
+        <div className="clean-card-header">
           <div>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>Published & In-Production Titles</h3>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-              Comprehensive catalog status, sales figures, and royalty earnings per platform
+            <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#0f172a' }}>Book Catalog</h3>
+            <p style={{ fontSize: '0.775rem', color: '#64748b' }}>
+              Overview of all your published titles and works in production
             </p>
           </div>
         </div>
 
         <div style={{ overflowX: 'auto' }}>
-          <table className="custom-table">
+          <table className="clean-table">
             <thead>
               <tr>
-                <th>Book Title & Details</th>
+                <th>Title & ISBN</th>
                 <th>Status</th>
-                <th>MRP / Royalty per Copy</th>
+                <th>MRP / Royalty</th>
                 <th>Copies Sold</th>
-                <th>Royalty Breakdown</th>
+                <th>Earned / Pending</th>
                 <th>Last Payout</th>
-                <th>Distribution Channels</th>
-                <th>Actions</th>
+                <th>Available On</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {books.map((b) => (
                 <tr key={b.book_id}>
-                  {/* Book Title */}
                   <td>
-                    <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-main)' }}>
-                      {b.title}
-                    </div>
-                    <div style={{ display: 'flex', gap: '0.75rem', marginTop: '0.2rem', fontSize: '0.75rem', color: 'var(--text-dim)' }}>
-                      <span>ISBN: <code style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>{b.isbn || 'Pending'}</code></span>
-                      <span>•</span>
-                      <span>{b.genre}</span>
-                      {b.publication_date && (
-                        <>
-                          <span>•</span>
-                          <span>Pub: {b.publication_date}</span>
-                        </>
-                      )}
+                    <div style={{ fontWeight: 600, color: '#0f172a' }}>{b.title}</div>
+                    <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '2px' }}>
+                      ISBN: <code style={{ fontFamily: 'var(--font-mono)' }}>{b.isbn || 'Pending Assignment'}</code> • {b.genre}
                     </div>
                   </td>
 
-                  {/* Status */}
                   <td>
                     <BookStatusBadge status={b.status} />
                   </td>
 
-                  {/* MRP */}
                   <td>
                     {b.mrp ? (
                       <div>
-                        <span style={{ fontWeight: 600 }}>₹{b.mrp}</span>
-                        <div style={{ fontSize: '0.725rem', color: 'var(--primary-400)' }}>
-                          +₹{b.author_royalty_per_copy} / copy
-                        </div>
+                        <span style={{ fontWeight: 500 }}>₹{b.mrp}</span>
+                        <span style={{ fontSize: '0.75rem', color: '#0f766e', marginLeft: '4px' }}>
+                          (₹{b.author_royalty_per_copy}/copy)
+                        </span>
                       </div>
                     ) : (
-                      <span style={{ color: 'var(--text-dim)', fontSize: '0.8rem' }}>TBD (In Production)</span>
+                      <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>TBD</span>
                     )}
                   </td>
 
-                  {/* Copies Sold */}
                   <td>
-                    <span style={{ fontWeight: 700, fontSize: '1rem' }}>
-                      {b.total_copies_sold ? b.total_copies_sold.toLocaleString() : 0}
-                    </span>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginLeft: '0.3rem' }}>copies</span>
+                    <span style={{ fontWeight: 600 }}>{b.total_copies_sold ? b.total_copies_sold.toLocaleString() : 0}</span>
                   </td>
 
-                  {/* Royalty Breakdown */}
                   <td>
                     <div>
-                      <span style={{ fontWeight: 600, color: 'var(--text-main)' }}>
-                        ₹{b.total_royalty_earned.toLocaleString()} earned
-                      </span>
-                      <div style={{ fontSize: '0.75rem', display: 'flex', gap: '0.5rem', marginTop: '0.15rem' }}>
-                        <span style={{ color: '#34d399' }}>Paid: ₹{b.royalty_paid.toLocaleString()}</span>
-                        <span style={{ color: b.royalty_pending > 0 ? '#fbbf24' : 'var(--text-dim)' }}>
-                          Pending: ₹{b.royalty_pending.toLocaleString()}
-                        </span>
+                      <span style={{ fontWeight: 600, color: '#0f172a' }}>₹{b.total_royalty_earned.toLocaleString()}</span>
+                      <div style={{ fontSize: '0.725rem', color: b.royalty_pending > 0 ? '#b45309' : '#64748b' }}>
+                        Pending: ₹{b.royalty_pending.toLocaleString()}
                       </div>
                     </div>
                   </td>
 
-                  {/* Last Payout */}
                   <td>
-                    {b.last_royalty_payout_date ? (
-                      <span style={{ fontSize: '0.825rem', color: 'var(--text-muted)' }}>
-                        {b.last_royalty_payout_date}
-                      </span>
-                    ) : (
-                      <span style={{ fontSize: '0.8rem', color: 'var(--text-dim)' }}>None yet</span>
-                    )}
+                    <span style={{ fontSize: '0.8rem', color: '#64748b' }}>
+                      {b.last_royalty_payout_date || '—'}
+                    </span>
                   </td>
 
-                  {/* Available Channels */}
                   <td>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem', maxWidth: '240px' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', maxWidth: '220px' }}>
                       {b.available_on && b.available_on.length > 0 ? (
                         b.available_on.map((ch, idx) => (
                           <span
                             key={idx}
                             style={{
-                              fontSize: '0.68rem',
-                              padding: '0.15rem 0.45rem',
+                              fontSize: '0.7rem',
+                              padding: '0.1rem 0.4rem',
                               borderRadius: '4px',
-                              background: 'rgba(255, 255, 255, 0.05)',
-                              border: '1px solid var(--border-subtle)',
-                              color: 'var(--text-muted)'
+                              background: '#f1f5f9',
+                              color: '#475569',
+                              border: '1px solid #e2e8f0'
                             }}
                           >
                             {ch}
                           </span>
                         ))
                       ) : (
-                        <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>Pending launch</span>
+                        <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Pending setup</span>
                       )}
                     </div>
                   </td>
 
-                  {/* Actions */}
                   <td>
                     <button
                       onClick={() => onSelectBookForQuery(b.book_id)}
                       className="btn btn-secondary btn-sm"
-                      title="Raise a support query regarding this book"
                     >
                       Raise Ticket
                     </button>

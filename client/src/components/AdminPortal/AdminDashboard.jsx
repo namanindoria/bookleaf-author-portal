@@ -3,7 +3,7 @@ import { TicketQueue } from './TicketQueue';
 import { TicketDetailWorkbench } from './TicketDetailWorkbench';
 import { OpsAnalytics } from './OpsAnalytics';
 import { api } from '../../services/api';
-import { ShieldAlert, Sparkles, BarChart3, Inbox, Layers } from 'lucide-react';
+import { BarChart3 } from 'lucide-react';
 
 export function AdminDashboard() {
   const [selectedTicketId, setSelectedTicketId] = useState(null);
@@ -41,76 +41,40 @@ export function AdminDashboard() {
 
   return (
     <div>
-      {/* Admin Ops Banner */}
-      <div style={{
-        marginBottom: '2rem',
-        padding: '1.75rem 2rem',
-        borderRadius: 'var(--radius-lg)',
-        background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(15, 23, 42, 0.5) 100%)',
-        border: '1px solid rgba(245, 158, 11, 0.25)',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        gap: '1rem'
-      }}>
+      {/* Simple Page Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#fbbf24', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            BookLeaf Operations Hub
-          </span>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, marginTop: '0.2rem' }}>
-            Support & Author Communications Desk
+          <h1 style={{ fontSize: '1.5rem', fontWeight: 700, color: '#0f172a' }}>
+            Operations & Support Desk
           </h1>
-          <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-            AI-assisted classification, priority routing, automated policy drafts, and real-time author communication.
+          <p style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '0.2rem' }}>
+            Author ticket triage, priority scoring, and AI-assisted policy response generation
           </p>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <button
-            onClick={() => setShowAnalytics(!showAnalytics)}
-            className={`btn btn-sm ${showAnalytics ? 'btn-primary' : 'btn-secondary'}`}
-            title="Toggle Operations Analytics and SLA Health metrics"
-          >
-            <BarChart3 size={15} />
-            <span>{showAnalytics ? 'Hide Analytics' : 'Analytics & SLA'}</span>
-          </button>
-
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.65rem',
-            background: 'rgba(15, 23, 42, 0.7)',
-            padding: '0.5rem 0.95rem',
-            borderRadius: 'var(--radius-md)',
-            border: '1px solid var(--border-subtle)',
-            fontSize: '0.8rem',
-            color: 'var(--text-muted)'
-          }}>
-            <Sparkles size={16} color="var(--primary-400)" />
-            <span>KB Context Ingestion Active</span>
-          </div>
-        </div>
+        <button
+          onClick={() => setShowAnalytics(!showAnalytics)}
+          className={`btn btn-sm ${showAnalytics ? 'btn-primary' : 'btn-secondary'}`}
+        >
+          <BarChart3 size={14} />
+          <span>{showAnalytics ? 'Hide Analytics' : 'Analytics & SLA'}</span>
+        </button>
       </div>
 
-      {/* Analytics Dashboard (Toggled) */}
+      {/* Analytics (Toggled) */}
       {showAnalytics && (
         <OpsAnalytics tickets={allTickets} />
       )}
 
       {/* Main Workspace Layout */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-        {/* If ticket is selected, display Workbench above */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         {selectedTicketId && (
-          <div style={{ marginBottom: '1rem' }}>
-            <TicketDetailWorkbench
-              ticketId={selectedTicketId}
-              onClose={handleCloseWorkbench}
-            />
-          </div>
+          <TicketDetailWorkbench
+            ticketId={selectedTicketId}
+            onClose={handleCloseWorkbench}
+          />
         )}
 
-        {/* Global Ticket Queue */}
         <TicketQueue
           onSelectTicket={handleSelectTicket}
           selectedTicketId={selectedTicketId}

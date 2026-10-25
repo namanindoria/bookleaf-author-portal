@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import { StatusBadge, PriorityBadge, CategoryBadge } from '../Common/Badge';
-import {
-  Search,
-  Filter,
-  Flame,
-  Clock,
-  AlertCircle,
-  Inbox,
-  ArrowUpDown,
-  User,
-  BookOpen
-} from 'lucide-react';
+import { Search, Flame } from 'lucide-react';
 
 const CATEGORIES = [
   "All",
@@ -56,7 +46,6 @@ export function TicketQueue({ onSelectTicket, selectedTicketId }) {
   useEffect(() => {
     fetchQueue();
 
-    // SSE real-time subscription
     const eventSource = api.subscribeSSE((event, data) => {
       fetchQueue();
     });
@@ -71,184 +60,139 @@ export function TicketQueue({ onSelectTicket, selectedTicketId }) {
     fetchQueue();
   };
 
-  // Queue analytics
   const openCount = tickets.filter(t => t.status === 'Open').length;
   const criticalCount = tickets.filter(t => t.priority === 'Critical' && t.status !== 'Resolved' && t.status !== 'Closed').length;
-  const inProgressCount = tickets.filter(t => t.status === 'In Progress').length;
 
   return (
-    <div className="glass-panel" style={{ overflow: 'hidden' }}>
-      {/* Queue Metrics Bar */}
-      <div style={{
-        padding: '1.25rem 1.5rem',
-        borderBottom: '1px solid var(--border-subtle)',
-        background: 'rgba(15, 23, 42, 0.6)',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        gap: '1rem'
-      }}>
+    <div className="clean-card" style={{ overflow: 'hidden' }}>
+      {/* Header */}
+      <div className="clean-card-header" style={{ flexWrap: 'wrap', gap: '0.75rem' }}>
         <div>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 800 }}>Global Ticket Queue</h2>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-            Real-time author support tickets triaged with AI classification & priority scoring
+          <h2 style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a' }}>Global Support Queue</h2>
+          <p style={{ fontSize: '0.775rem', color: '#64748b' }}>
+            Incoming author queries with automatic AI classification and priority routing
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.45rem',
-            padding: '0.35rem 0.75rem',
-            borderRadius: 'var(--radius-full)',
-            background: 'rgba(2, 132, 199, 0.12)',
-            border: '1px solid rgba(2, 132, 199, 0.3)',
-            fontSize: '0.775rem',
-            color: '#38bdf8',
-            fontWeight: 600
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <span style={{
+            fontSize: '0.75rem',
+            fontWeight: 600,
+            padding: '0.2rem 0.55rem',
+            borderRadius: '4px',
+            background: '#e0f2fe',
+            color: '#0369a1'
           }}>
-            <Inbox size={14} />
-            <span>Open: {openCount}</span>
-          </div>
-
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.45rem',
-            padding: '0.35rem 0.75rem',
-            borderRadius: 'var(--radius-full)',
-            background: 'rgba(245, 158, 11, 0.12)',
-            border: '1px solid rgba(245, 158, 11, 0.3)',
-            fontSize: '0.775rem',
-            color: '#fbbf24',
-            fontWeight: 600
-          }}>
-            <Clock size={14} />
-            <span>In Progress: {inProgressCount}</span>
-          </div>
-
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.45rem',
-            padding: '0.35rem 0.75rem',
-            borderRadius: 'var(--radius-full)',
-            background: criticalCount > 0 ? 'rgba(244, 63, 94, 0.18)' : 'rgba(255, 255, 255, 0.05)',
-            border: criticalCount > 0 ? '1px solid rgba(244, 63, 94, 0.4)' : '1px solid var(--border-subtle)',
-            fontSize: '0.775rem',
-            color: criticalCount > 0 ? '#fb7185' : 'var(--text-dim)',
-            fontWeight: 700
-          }}>
-            <Flame size={14} />
-            <span>Critical Unresolved: {criticalCount}</span>
-          </div>
+            Open: {openCount}
+          </span>
+          {criticalCount > 0 && (
+            <span style={{
+              fontSize: '0.75rem',
+              fontWeight: 600,
+              padding: '0.2rem 0.55rem',
+              borderRadius: '4px',
+              background: '#ffe4e6',
+              color: '#be123c',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.25rem'
+            }}>
+              <Flame size={12} /> Critical Unresolved: {criticalCount}
+            </span>
+          )}
         </div>
       </div>
 
-      {/* Filter Controls */}
+      {/* Filter Toolbar */}
       <div style={{
-        padding: '1rem 1.5rem',
-        borderBottom: '1px solid var(--border-subtle)',
-        background: 'rgba(0, 0, 0, 0.2)',
+        padding: '0.75rem 1.25rem',
+        borderBottom: '1px solid #e2e8f0',
+        background: '#f8fafc',
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-        gap: '0.75rem',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))',
+        gap: '0.65rem',
         alignItems: 'center'
       }}>
         {/* Search */}
         <form onSubmit={handleSearchSubmit} style={{ position: 'relative' }}>
-          <Search size={14} color="var(--text-dim)" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }} />
+          <Search size={13} color="#94a3b8" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }} />
           <input
             type="text"
             className="form-control"
-            style={{ paddingLeft: '2rem', fontSize: '0.825rem' }}
-            placeholder="Search tickets, author, book..."
+            style={{ paddingLeft: '1.9rem', fontSize: '0.8rem', padding: '0.4rem 0.6rem 0.4rem 1.9rem' }}
+            placeholder="Search author, book, ID..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </form>
 
-        {/* Status Filter */}
-        <div>
-          <select
-            className="form-control"
-            style={{ fontSize: '0.825rem' }}
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-          >
-            {STATUSES.map(s => <option key={s} value={s}>Status: {s}</option>)}
-          </select>
-        </div>
+        <select
+          className="form-control"
+          style={{ fontSize: '0.8rem', padding: '0.4rem 0.6rem' }}
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+        >
+          {STATUSES.map(s => <option key={s} value={s}>Status: {s}</option>)}
+        </select>
 
-        {/* Category Filter */}
-        <div>
-          <select
-            className="form-control"
-            style={{ fontSize: '0.825rem' }}
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-          >
-            {CATEGORIES.map(c => <option key={c} value={c}>Category: {c}</option>)}
-          </select>
-        </div>
+        <select
+          className="form-control"
+          style={{ fontSize: '0.8rem', padding: '0.4rem 0.6rem' }}
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value)}
+        >
+          {CATEGORIES.map(c => <option key={c} value={c}>Category: {c}</option>)}
+        </select>
 
-        {/* Priority Filter */}
-        <div>
-          <select
-            className="form-control"
-            style={{ fontSize: '0.825rem' }}
-            value={priorityFilter}
-            onChange={(e) => setPriorityFilter(e.target.value)}
-          >
-            {PRIORITIES.map(p => <option key={p} value={p}>Priority: {p}</option>)}
-          </select>
-        </div>
+        <select
+          className="form-control"
+          style={{ fontSize: '0.8rem', padding: '0.4rem 0.6rem' }}
+          value={priorityFilter}
+          onChange={(e) => setPriorityFilter(e.target.value)}
+        >
+          {PRIORITIES.map(p => <option key={p} value={p}>Priority: {p}</option>)}
+        </select>
 
-        {/* Sort By */}
-        <div>
-          <select
-            className="form-control"
-            style={{ fontSize: '0.825rem' }}
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-          >
-            <option value="urgent_first">🚨 Urgent & Oldest First</option>
-            <option value="newest">🕒 Newest First</option>
-            <option value="oldest">⏳ Oldest First</option>
-          </select>
-        </div>
+        <select
+          className="form-control"
+          style={{ fontSize: '0.8rem', padding: '0.4rem 0.6rem' }}
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+        >
+          <option value="urgent_first">Sort: Urgent & Oldest First</option>
+          <option value="newest">Sort: Newest First</option>
+          <option value="oldest">Sort: Oldest First</option>
+        </select>
       </div>
 
-      {/* Ticket List Table */}
+      {/* Table */}
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--text-dim)' }}>
-          Updating ticket queue...
+        <div style={{ textAlign: 'center', padding: '3rem 0', color: '#64748b' }}>
+          Updating queue...
         </div>
       ) : tickets.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--text-dim)' }}>
+        <div style={{ textAlign: 'center', padding: '3rem 0', color: '#64748b' }}>
           No support tickets match the selected filters.
         </div>
       ) : (
         <div style={{ overflowX: 'auto' }}>
-          <table className="custom-table">
+          <table className="clean-table">
             <thead>
               <tr>
-                <th style={{ width: '110px' }}>Ticket ID</th>
+                <th style={{ width: '100px' }}>ID</th>
                 <th>Author & Book</th>
-                <th>Subject & Query</th>
+                <th>Subject</th>
                 <th>Category</th>
                 <th>Priority</th>
                 <th>Status</th>
-                <th>Received</th>
+                <th>Date</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {tickets.map((t) => {
                 const isSelected = selectedTicketId === t.id;
-                const isUrgent = (t.priority === 'Critical' || t.priority === 'High') && t.status !== 'Resolved' && t.status !== 'Closed';
+                const isCritical = (t.priority === 'Critical') && t.status !== 'Resolved' && t.status !== 'Closed';
 
                 return (
                   <tr
@@ -256,50 +200,32 @@ export function TicketQueue({ onSelectTicket, selectedTicketId }) {
                     onClick={() => onSelectTicket(t.id)}
                     style={{
                       cursor: 'pointer',
-                      background: isSelected
-                        ? 'rgba(16, 185, 129, 0.1)'
-                        : isUrgent
-                        ? 'rgba(244, 63, 94, 0.04)'
-                        : 'transparent',
-                      borderLeft: isSelected
-                        ? '3px solid var(--primary-500)'
-                        : isUrgent
-                        ? '3px solid #fb7185'
-                        : '3px solid transparent'
+                      backgroundColor: isSelected ? '#f0fdfa' : '#ffffff',
+                      borderLeft: isSelected ? '3px solid #0f766e' : isCritical ? '3px solid #f43f5e' : '3px solid transparent'
                     }}
                   >
-                    {/* ID */}
                     <td>
-                      <span style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.785rem',
-                        fontWeight: 700,
-                        color: isUrgent ? '#fb7185' : 'var(--primary-400)'
-                      }}>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.785rem', fontWeight: 600, color: '#0f766e' }}>
                         {t.id}
                       </span>
                     </td>
 
-                    {/* Author & Book */}
                     <td>
-                      <div style={{ fontWeight: 600, color: 'var(--text-main)', fontSize: '0.875rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                        <User size={13} color="var(--text-dim)" />
+                      <div style={{ fontWeight: 600, color: '#0f172a', fontSize: '0.85rem' }}>
                         {t.author_name}
                       </div>
                       {t.book_title && (
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.35rem', marginTop: '0.15rem' }}>
-                          <BookOpen size={12} color="var(--text-dim)" />
-                          <em>{t.book_title}</em>
+                        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                          {t.book_title}
                         </div>
                       )}
                     </td>
 
-                    {/* Subject */}
-                    <td style={{ maxWidth: '320px' }}>
+                    <td style={{ maxWidth: '300px' }}>
                       <div style={{
-                        fontWeight: 600,
-                        color: 'var(--text-main)',
-                        fontSize: '0.875rem',
+                        fontWeight: 500,
+                        color: '#0f172a',
+                        fontSize: '0.85rem',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap'
@@ -308,39 +234,33 @@ export function TicketQueue({ onSelectTicket, selectedTicketId }) {
                       </div>
                       <div style={{
                         fontSize: '0.75rem',
-                        color: 'var(--text-dim)',
+                        color: '#64748b',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        marginTop: '0.15rem'
+                        whiteSpace: 'nowrap'
                       }}>
                         {t.description}
                       </div>
                     </td>
 
-                    {/* Category */}
                     <td>
                       <CategoryBadge category={t.category} />
                     </td>
 
-                    {/* Priority */}
                     <td>
                       <PriorityBadge priority={t.priority} />
                     </td>
 
-                    {/* Status */}
                     <td>
                       <StatusBadge status={t.status} />
                     </td>
 
-                    {/* Received Date */}
                     <td>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--text-dim)' }}>
+                      <span style={{ fontSize: '0.775rem', color: '#64748b' }}>
                         {new Date(t.created_at).toLocaleDateString()}
                       </span>
                     </td>
 
-                    {/* Action */}
                     <td>
                       <button
                         onClick={(e) => {
@@ -348,9 +268,9 @@ export function TicketQueue({ onSelectTicket, selectedTicketId }) {
                           onSelectTicket(t.id);
                         }}
                         className={`btn btn-sm ${isSelected ? 'btn-primary' : 'btn-secondary'}`}
-                        style={{ fontSize: '0.75rem', padding: '0.35rem 0.75rem' }}
+                        style={{ fontSize: '0.75rem', padding: '0.25rem 0.65rem' }}
                       >
-                        Open Workbench
+                        Workbench
                       </button>
                     </td>
                   </tr>

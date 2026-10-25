@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { BookMarked, Shield, User, ArrowRight } from 'lucide-react';
+import { BookOpen, ArrowRight, Shield, User } from 'lucide-react';
 
 export function Login() {
   const { login } = useAuth();
@@ -22,7 +22,7 @@ export function Login() {
     try {
       await login(email.trim(), password.trim());
     } catch (err) {
-      setError(err.message || 'Login failed. Please verify credentials.');
+      setError(err.message || 'Login failed. Please verify your credentials.');
     } finally {
       setLoading(false);
     }
@@ -35,44 +35,43 @@ export function Login() {
 
   return (
     <div style={{
-      minHeight: '80vh',
+      minHeight: '75vh',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       padding: '2rem 1rem'
     }}>
-      <div className="glass-panel" style={{ width: '100%', maxWidth: '440px', padding: '2.5rem 2rem' }}>
-        {/* Brand Header */}
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+      <div className="clean-card" style={{ width: '100%', maxWidth: '420px', padding: '2rem' }}>
+        {/* Header */}
+        <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
           <div style={{
-            width: '52px',
-            height: '52px',
-            borderRadius: '14px',
-            background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+            width: '44px',
+            height: '44px',
+            borderRadius: '8px',
+            backgroundColor: '#0f766e',
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
             color: '#ffffff',
-            boxShadow: '0 8px 20px rgba(16, 185, 129, 0.4)',
-            marginBottom: '1rem'
+            marginBottom: '0.75rem'
           }}>
-            <BookMarked size={28} />
+            <BookOpen size={22} />
           </div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 800 }}>BookLeaf Publishing</h2>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
-            Author Support & Operations Communication Portal
+          <h2 style={{ fontSize: '1.35rem', fontWeight: 700, color: '#0f172a' }}>BookLeaf Publishing</h2>
+          <p style={{ fontSize: '0.85rem', color: '#64748b', marginTop: '2px' }}>
+            Author Support & Operations Portal
           </p>
         </div>
 
         {error && (
           <div style={{
-            background: 'rgba(244, 63, 94, 0.12)',
-            border: '1px solid rgba(244, 63, 94, 0.3)',
-            color: '#fda4af',
-            padding: '0.75rem 1rem',
-            borderRadius: 'var(--radius-md)',
+            background: '#fef2f2',
+            border: '1px solid #fecaca',
+            color: '#b91c1c',
+            padding: '0.65rem 0.85rem',
+            borderRadius: '6px',
             marginBottom: '1.25rem',
-            fontSize: '0.85rem'
+            fontSize: '0.825rem'
           }}>
             {error}
           </div>
@@ -96,7 +95,7 @@ export function Login() {
             <input
               type="password"
               className="form-control"
-              placeholder="Enter password (author123 or admin123)"
+              placeholder="author123 or admin123"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -107,54 +106,54 @@ export function Login() {
             type="submit"
             disabled={loading}
             className="btn btn-primary"
-            style={{ width: '100%', padding: '0.75rem', marginTop: '0.5rem' }}
+            style={{ width: '100%', padding: '0.65rem', marginTop: '0.5rem' }}
           >
-            <span>{loading ? 'Authenticating...' : 'Sign In'}</span>
-            <ArrowRight size={16} />
+            <span>{loading ? 'Signing in...' : 'Sign In'}</span>
+            <ArrowRight size={14} />
           </button>
         </form>
 
-        {/* Quick Demo Evaluation Accounts */}
-        <div style={{ marginTop: '2rem', borderTop: '1px solid var(--border-subtle)', paddingTop: '1.25rem' }}>
-          <p style={{ fontSize: '0.725rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-dim)', letterSpacing: '0.05em', marginBottom: '0.65rem' }}>
-            One-Click Demo Credentials:
+        {/* Demo Accounts */}
+        <div style={{ marginTop: '1.75rem', borderTop: '1px solid #e2e8f0', paddingTop: '1.25rem' }}>
+          <p style={{ fontSize: '0.725rem', fontWeight: 600, textTransform: 'uppercase', color: '#64748b', marginBottom: '0.65rem' }}>
+            Quick Demo Accounts:
           </p>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
             <button
               type="button"
               onClick={() => handleQuickLogin('admin@bookleaf.in', 'admin123')}
               className="btn btn-secondary btn-sm"
-              style={{ justifyContent: 'space-between', fontSize: '0.775rem', padding: '0.45rem 0.75rem' }}
+              style={{ justifyContent: 'space-between', fontSize: '0.785rem' }}
             >
               <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <Shield size={13} color="#f59e0b" /> Admin Desk (admin@bookleaf.in)
+                <Shield size={13} color="#d97706" /> Admin: admin@bookleaf.in
               </span>
-              <span style={{ color: 'var(--text-dim)', fontSize: '0.7rem' }}>admin123</span>
+              <span style={{ color: '#94a3b8' }}>admin123</span>
             </button>
 
             <button
               type="button"
               onClick={() => handleQuickLogin('priya.sharma@email.com', 'author123')}
               className="btn btn-secondary btn-sm"
-              style={{ justifyContent: 'space-between', fontSize: '0.775rem', padding: '0.45rem 0.75rem' }}
+              style={{ justifyContent: 'space-between', fontSize: '0.785rem' }}
             >
               <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <User size={13} color="#10b981" /> Author: Priya Sharma
+                <User size={13} color="#0f766e" /> Author: Priya Sharma
               </span>
-              <span style={{ color: 'var(--text-dim)', fontSize: '0.7rem' }}>author123</span>
+              <span style={{ color: '#94a3b8' }}>author123</span>
             </button>
 
             <button
               type="button"
               onClick={() => handleQuickLogin('rohit.kapoor@email.com', 'author123')}
               className="btn btn-secondary btn-sm"
-              style={{ justifyContent: 'space-between', fontSize: '0.775rem', padding: '0.45rem 0.75rem' }}
+              style={{ justifyContent: 'space-between', fontSize: '0.785rem' }}
             >
               <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <User size={13} color="#10b981" /> Author: Rohit Kapoor
+                <User size={13} color="#0f766e" /> Author: Rohit Kapoor
               </span>
-              <span style={{ color: 'var(--text-dim)', fontSize: '0.7rem' }}>author123</span>
+              <span style={{ color: '#94a3b8' }}>author123</span>
             </button>
           </div>
         </div>
