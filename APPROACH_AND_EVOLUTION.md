@@ -28,8 +28,8 @@
   For the assignment and evaluation environment, zero-friction setup is critical. Using Node's native SQLite provides sub-millisecond query performance, clean foreign-key relational integrity, and zero compilation hurdles across platforms. The trade-off is horizontal concurrency limits, which is solved in production by switching the data access layer to PostgreSQL or CockroachDB.
 - **Server-Sent Events (SSE) over Full Duplex WebSockets:**
   SSE was chosen over WebSockets because ticket support communication is fundamentally event-driven (new messages, status changes, notes) while standard POST/PATCH requests handle client-to-server operations with full HTTP semantics, caching, and auth middleware. This significantly reduced architectural complexity without sacrificing perceived real-time responsiveness.
-- **UI File Attachment Simulation over S3 Integration:**
-  To keep local setup self-contained without requiring AWS IAM credentials, attachments support client-side preview, validation, and metadata simulation rather than direct S3 multipart uploading.
+- **Local Disk Storage for File Uploads over Cloud S3:**
+  For frictionless local setup and assignment evaluation, file uploads are handled directly on the backend via Multer storing securely in `server/uploads/` with direct preview and download links. This avoids requiring AWS IAM credentials during evaluation while easily mapping to S3 or Cloudflare R2 pre-signed URLs in production.
 
 ---
 
