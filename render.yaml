@@ -3,9 +3,11 @@ services:
     name: bookleaf-author-portal
     env: node
     plan: free
-    buildCommand: "npm run install:all && npm run build"
-    startCommand: "npm run start"
+    buildCommand: "npm run install:all && npm run build && mkdir -p server/public && cp -r client/dist/* server/public/"
+    startCommand: "cd server && npm start"
     envVars:
+      - key: NODE_VERSION
+        value: 22.12.0
       - key: NODE_ENV
         value: production
       - key: PORT

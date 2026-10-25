@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "BookLeaf Publishing Author Support & Communication Portal",
   "private": true,
+  "engines": {
+    "node": ">=22.5.0"
+  },
   "scripts": {
-    "install:all": "npm --prefix server install && npm --prefix client install",
+    "install:all": "npm --prefix server install --production=false && npm --prefix client install --production=false",
     "seed": "npm --prefix server run seed",
     "test": "npm --prefix server run test",
     "server": "npm --prefix server run start",
