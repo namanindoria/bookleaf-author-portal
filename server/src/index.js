@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 
@@ -54,9 +55,10 @@ app.use('/api/authors', authorRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/tickets', ticketRoutes);
 
-// Serve built frontend if available (Production / Docker deployment)
-const clientBuildDir = path.resolve(__dirname, '../public');
-const fs = require('fs');
+// Serve built frontend if available (Production / Docker / Unified deployment)
+const clientDistDir = path.resolve(__dirname, '../../client/dist');
+const publicDir = path.resolve(__dirname, '../public');
+const clientBuildDir = fs.existsSync(clientDistDir) ? clientDistDir : publicDir;
 if (fs.existsSync(clientBuildDir)) {
   app.use(express.static(clientBuildDir));
   app.get('*', (req, res, next) => {
