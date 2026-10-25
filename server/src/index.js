@@ -54,6 +54,19 @@ app.use('/api/authors', authorRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/tickets', ticketRoutes);
 
+// Serve built frontend if available (Production / Docker deployment)
+const clientBuildDir = path.resolve(__dirname, '../public');
+const fs = require('fs');
+if (fs.existsSync(clientBuildDir)) {
+  app.use(express.static(clientBuildDir));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+      return next();
+    }
+    res.sendFile(path.join(clientBuildDir, 'index.html'));
+  });
+}
+
 // 404 & Error Handling
 app.use(notFoundHandler);
 app.use(errorHandler);

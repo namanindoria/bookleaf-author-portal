@@ -77,14 +77,25 @@ export function SubmitTicket({ authorId, initialBookId = null, onTicketCreated }
     }
   };
 
-  const handleFileChange = (e) => {
+  const [uploadingFile, setUploadingFile] = useState(false);
+
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      setAttachment({
-        name: file.name,
-        size: (file.size / 1024).toFixed(1) + ' KB',
-        type: file.type
-      });
+      setUploadingFile(true);
+      setError('');
+      try {
+        const uploadRes = await api.uploadFile(file);
+        setAttachment({
+          name: uploadRes.fileName,
+          url: uploadRes.fileUrl,
+          size: (uploadRes.sizeBytes / 1024).toFixed(1) + ' KB'
+        });
+      } catch (err) {
+        setError('File upload failed: ' + err.message);
+      } finally {
+        setUploadingFile(false);
+      }
     }
   };
 
@@ -104,7 +115,7 @@ export function SubmitTicket({ authorId, initialBookId = null, onTicketCreated }
         subject: subject.trim(),
         description: description.trim(),
         attachment_name: attachment ? attachment.name : null,
-        attachment_url: attachment ? 'simulated_attachment_url' : null
+        attachment_url: attachment ? attachment.url : null
       });
 
       setSubmittedTicket(created);
@@ -316,9 +327,9 @@ export function SubmitTicket({ authorId, initialBookId = null, onTicketCreated }
                   transition: 'border-color 0.2s',
                   background: 'rgba(255, 255, 255, 0.02)'
                 }}>
-                  <Upload size={24} color="var(--text-dim)" style={{ marginBottom: '0.4rem' }} />
-                  <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                    Click or drag file here to attach (JPG, PNG, PDF up to 10MB)
+                  <Upload size={24} color={uploadingFile ? "var(--primary-400)" : "var(--text-dim)"} className={uploadingFile ? "animate-spin" : ""} style={{ marginBottom: '0.4rem' }} />
+                  <span style={{ fontSize: '0.85rem', color: uploadingFile ? "var(--primary-400)" : "var(--text-muted)" }}>
+                    {uploadingFile ? 'Uploading attachment to server...' : 'Click or drag file here to attach (JPG, PNG, PDF up to 10MB)'}
                   </span>
                   <input
                     type="file"

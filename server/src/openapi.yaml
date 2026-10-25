@@ -247,6 +247,26 @@ paths:
         201:
           description: Ticket created successfully
 
+  /api/tickets/upload:
+    post:
+      summary: Upload support attachment (images, defect photos, PDFs)
+      tags: [Tickets]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                attachment:
+                  type: string
+                  format: binary
+      responses:
+        201:
+          description: Attachment uploaded successfully
+
   /api/tickets/events:
     get:
       summary: Real-time Server-Sent Events stream for ticket synchronization

@@ -506,6 +506,29 @@ export function TicketDetailWorkbench({ ticketId, onTicketUpdated, onClose }) {
                 <div style={{ fontSize: '0.875rem', whiteSpace: 'pre-wrap', lineHeight: 1.5 }}>
                   {m.message}
                 </div>
+                {m.attachment_name && (
+                  <div style={{ marginTop: '0.6rem' }}>
+                    <a
+                      href={m.attachment_url || '#'}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.4rem',
+                        padding: '0.35rem 0.65rem',
+                        background: 'rgba(0,0,0,0.3)',
+                        border: '1px solid var(--border-subtle)',
+                        borderRadius: '4px',
+                        fontSize: '0.75rem',
+                        color: 'var(--primary-300)',
+                        textDecoration: 'none'
+                      }}
+                    >
+                      📎 Attached: {m.attachment_name} ↗
+                    </a>
+                  </div>
+                )}
               </div>
             );
           })}

@@ -77,6 +77,21 @@ export const api = {
     method: 'POST',
     body: JSON.stringify(noteData)
   }),
+  uploadFile: async (file) => {
+    const formData = new FormData();
+    formData.append('attachment', file);
+    const token = localStorage.getItem('bookleaf_token');
+    const res = await fetch(`${API_BASE}/tickets/upload`, {
+      method: 'POST',
+      headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+      body: formData
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || 'File upload failed');
+    }
+    return res.json();
+  },
   generateAiDraft: (id) => request(`/tickets/${id}/ai-draft`, {
     method: 'POST'
   }),

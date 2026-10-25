@@ -1,10 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TicketQueue } from './TicketQueue';
 import { TicketDetailWorkbench } from './TicketDetailWorkbench';
-import { ShieldAlert, Sparkles, SlidersHorizontal } from 'lucide-react';
+import { OpsAnalytics } from './OpsAnalytics';
+import { api } from '../../services/api';
+import { ShieldAlert, Sparkles, BarChart3, Inbox, Layers } from 'lucide-react';
 
 export function AdminDashboard() {
   const [selectedTicketId, setSelectedTicketId] = useState(null);
+  const [allTickets, setAllTickets] = useState([]);
+  const [showAnalytics, setShowAnalytics] = useState(false);
+
+  const loadAllTickets = async () => {
+    try {
+      const data = await api.getTickets();
+      setAllTickets(data);
+    } catch (err) {
+      console.error('Failed to load tickets for analytics:', err);
+    }
+  };
+
+  useEffect(() => {
+    loadAllTickets();
+
+    const eventSource = api.subscribeSSE((event, data) => {
+      loadAllTickets();
+    });
+
+    return () => {
+      if (eventSource) eventSource.close();
+    };
+  }, []);
 
   const handleSelectTicket = (id) => {
     setSelectedTicketId(id);
@@ -41,25 +66,41 @@ export function AdminDashboard() {
           </p>
         </div>
 
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.65rem',
-          background: 'rgba(15, 23, 42, 0.7)',
-          padding: '0.65rem 1.1rem',
-          borderRadius: 'var(--radius-md)',
-          border: '1px solid var(--border-subtle)',
-          fontSize: '0.8rem',
-          color: 'var(--text-muted)'
-        }}>
-          <Sparkles size={16} color="var(--primary-400)" />
-          <span>Knowledge Base RAG & Auto-Drafts Active</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <button
+            onClick={() => setShowAnalytics(!showAnalytics)}
+            className={`btn btn-sm ${showAnalytics ? 'btn-primary' : 'btn-secondary'}`}
+            title="Toggle Operations Analytics and SLA Health metrics"
+          >
+            <BarChart3 size={15} />
+            <span>{showAnalytics ? 'Hide Analytics' : 'Analytics & SLA'}</span>
+          </button>
+
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.65rem',
+            background: 'rgba(15, 23, 42, 0.7)',
+            padding: '0.5rem 0.95rem',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--border-subtle)',
+            fontSize: '0.8rem',
+            color: 'var(--text-muted)'
+          }}>
+            <Sparkles size={16} color="var(--primary-400)" />
+            <span>KB Context Ingestion Active</span>
+          </div>
         </div>
       </div>
 
+      {/* Analytics Dashboard (Toggled) */}
+      {showAnalytics && (
+        <OpsAnalytics tickets={allTickets} />
+      )}
+
       {/* Main Workspace Layout */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-        {/* If ticket is selected, display Workbench above or alongside */}
+        {/* If ticket is selected, display Workbench above */}
         {selectedTicketId && (
           <div style={{ marginBottom: '1rem' }}>
             <TicketDetailWorkbench

@@ -1,11 +1,63 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path');
+const fs = require('fs');
+const multer = require('multer');
+const { v4: uuidv4 } = require('uuid');
 const dbService = require('../services/dbService');
 const aiService = require('../services/aiService');
 const sseService = require('../services/sseService');
 const { authenticate } = require('../middleware/auth');
 const { requireAdmin } = require('../middleware/rbac');
 const { CATEGORIES, PRIORITIES } = require('../config/knowledgeBase');
+
+// Setup multer storage
+const uploadsDir = path.resolve(__dirname, '../../uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadsDir);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `${Date.now()}-${uuidv4().slice(0, 8)}${ext}`);
+  }
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
+  fileFilter: (req, file, cb) => {
+    const allowed = /jpeg|jpg|png|webp|pdf/;
+    const ext = path.extname(file.originalname).toLowerCase().replace('.', '');
+    if (allowed.test(ext) || allowed.test(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type. Only JPG, PNG, WEBP, and PDF documents are supported.'));
+    }
+  }
+});
+
+/**
+ * POST /api/tickets/upload
+ * Actual file attachment upload handler (Bonus Feature)
+ */
+router.post('/upload', authenticate, upload.single('attachment'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: true, message: 'No file uploaded.' });
+  }
+
+  const fileUrl = `/uploads/${req.file.filename}`;
+  res.status(201).json({
+    fileUrl,
+    fileName: req.file.originalname,
+    sizeBytes: req.file.size,
+    mimeType: req.file.mimetype
+  });
+});
 
 /**
  * GET /api/tickets/events

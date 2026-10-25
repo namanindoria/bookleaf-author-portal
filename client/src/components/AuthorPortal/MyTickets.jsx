@@ -215,8 +215,26 @@ export function MyTickets({ authorId, onSwitchToSubmit }) {
                       </div>
 
                       {msg.attachment_name && (
-                        <div style={{ marginTop: '0.6rem', padding: '0.35rem 0.6rem', background: 'rgba(0,0,0,0.2)', borderRadius: '4px', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-muted)' }}>
-                          📎 {msg.attachment_name}
+                        <div style={{ marginTop: '0.6rem' }}>
+                          <a
+                            href={msg.attachment_url || '#'}
+                            target="_blank"
+                            rel="noreferrer"
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.4rem',
+                              padding: '0.35rem 0.65rem',
+                              background: 'rgba(0,0,0,0.3)',
+                              border: '1px solid var(--border-subtle)',
+                              borderRadius: '4px',
+                              fontSize: '0.75rem',
+                              color: 'var(--primary-300)',
+                              textDecoration: 'none'
+                            }}
+                          >
+                            📎 {msg.attachment_name} ↗
+                          </a>
                         </div>
                       )}
                     </div>
