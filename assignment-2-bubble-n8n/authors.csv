@@ -1,0 +1,12 @@
+author_id,name,email,phone,city,joined_date,user_type,total_books,total_royalty_earned,total_royalty_paid,total_royalty_pending,payout_status
+"AUTH001","Priya Sharma","priya.sharma@email.com","+91-98765-43210","Mumbai","2023-03-15","author",2,19908,16338,3570,"overdue"
+"AUTH002","Rohit Kapoor","rohit.kapoor@email.com","+91-87654-32109","Delhi","2022-11-08","author",2,84024,71000,13024,"overdue"
+"AUTH003","Ananya Reddy","ananya.reddy@email.com","+91-76543-21098","Hyderabad","2024-02-20","author",1,2546,0,2546,"overdue"
+"AUTH004","Vikram Joshi","vikram.joshi@email.com","+91-65432-10987","Pune","2023-07-12","author",2,15195,11845,3350,"overdue"
+"AUTH005","Meera Nair","meera.nair@email.com","+91-54321-09876","Kochi","2023-01-05","author",2,25295,22240,3055,"overdue"
+"AUTH006","Arjun Malhotra","arjun.malhotra@email.com","+91-43210-98765","Chandigarh","2024-06-01","author",1,2464,0,2464,"overdue"
+"AUTH007","Sneha Kulkarni","sneha.kulkarni@email.com","+91-32109-87654","Bangalore","2022-09-18","author",3,60865,53000,7865,"overdue"
+"AUTH008","Farhan Sheikh","farhan.sheikh@email.com","+91-21098-76543","Lucknow","2023-10-01","author",1,3120,3120,0,"fully paid"
+"AUTH009","Kavita Deshmukh","kavita.deshmukh@email.com","+91-10987-65432","Nagpur","2024-04-10","author",2,850,0,850,"overdue"
+"AUTH010","Diya Chatterjee","diya.chatterjee@email.com","+91-09876-54321","Kolkata","2023-05-22","author",2,29115,25000,4115,"overdue"
+"ADMIN001","Admin Operations Desk","admin@bookleaf.in","+91-99999-00000","Delhi","2023-01-01","admin",0,0,0,0,"fully paid"

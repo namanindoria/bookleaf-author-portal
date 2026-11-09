@@ -1,0 +1,2 @@
+log_id,author_id,author_name,author_email,triggered_at,status,summary_preview,email_sent
+"LOG001","AUTH001","Priya Sharma","priya.sharma@email.com","2026-11-09 14:00:00","Success","Royalty summary for Whispers of the Ganges & The Saffron Diaries generated with payout ETA.",true
